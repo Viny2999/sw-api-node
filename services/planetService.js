@@ -1,5 +1,6 @@
 const Planet = require('../utils/mongoose').Planet;
 const ERRO = require("../utils/erros");
+const axios = require("axios");
 
 const getAllPlanets = (req, res) => {
   Planet.find().sort({ _id: 1 }).then(response => {
@@ -10,9 +11,11 @@ const getAllPlanets = (req, res) => {
 };
 
 const getOnePlanetId = (req, res) => {
-  Planet.find({ _id: req.params.id }).then(response => {
+  Planet.find({ _id: req.params.id }).then(async response => {
     if (response.length < 1) res.status(404).send(ERRO.NOT_FOUND);
-    else res.send(response);
+    else {
+      return requestMovies(response);
+    }
   }).catch(err => {
     res.status(500).send(ERRO.SERVER_ERROR);
   })
@@ -68,6 +71,17 @@ const deletePlanet = (req, res) => {
     res.status(500).send(ERRO.SERVER_ERROR);
   });
 };
+
+const requestMovies = async (planet) => {
+  const swapiEndpoint = "https://swapi.co/api/planets/";
+  planet = planet[0];
+
+  planet = await axios.get(swapiEndpoint + planet._id).then(res => {
+    return Object.assign(planet, res.data.films);
+  })
+
+  console.log(planet);
+}
 
 exports.getAllPlanets = getAllPlanets;
 exports.getOnePlanetId = getOnePlanetId;
