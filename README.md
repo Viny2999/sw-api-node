@@ -3,14 +3,18 @@ A Simple Star Wars Node API for a B2W challenge :)
 
 ## Endpoints
 
-Get all planets: `GET localhost:3000/api/planets`  
+Get all planets: `GET localhost:3000/planets`  
 
-Get all people: `GET localhost:3000/api/people` 
+Search per ID: `GET localhost:3000/planets/<ID>`
 
-Search per ID: `GET localhost:3000/api/planets/<ID>`
+Search per Name: `GET localhost:3000/planets/search/<NAME>`
 
-Post a planet: `POST localhost:3000/api/planets/`
+Post a planet: `POST localhost:3000/planets`
 
-Put a planet: `PUT localhost:3000/api/planets/<ID>`
+Put a planet: `PUT localhost:3000/planets/<ID>`
 
-Delete a planet: `DELETE localhost:3000/api/planets/<ID>`
+Delete a planet: `DELETE localhost:3000/planets/<ID>`
+
+## Tests
+
+To start unit tests run `npm test`

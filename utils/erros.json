@@ -1,0 +1,17 @@
+{
+  "NOT_FOUND": {
+    "error": {
+      "message": "Not Found"
+    }
+  },
+  "SERVER_ERROR": {
+    "error": {
+      "message": "Internal Server Error"
+    }
+  },
+  "MISSING_INFORMATION": {
+    "error": {
+      "message": "Missing Information"
+    }
+  }
+}

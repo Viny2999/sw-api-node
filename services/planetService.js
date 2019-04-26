@@ -1,64 +1,77 @@
 const Planet = require('../utils/mongoose').Planet;
+const ERRO = require("../utils/erros");
 
-exports.getAllPlanets = (req, res) => {
-  Planet.find().then(response => {
+const getAllPlanets = (req, res) => {
+  Planet.find().sort({ _id: 1 }).then(response => {
     res.send(response);
   }).catch(err => {
-    res.status(500).send({ error: err.message });
+    res.status(500).send(ERRO.SERVER_ERROR);
   });
 };
 
-exports.getOnePlanetId = (req, res) => {
+const getOnePlanetId = (req, res) => {
   Planet.find({ _id: req.params.id }).then(response => {
-    res.send(response);
+    if (response.length < 1) res.status(404).send(ERRO.NOT_FOUND);
+    else res.send(response);
   }).catch(err => {
-    res.status(500).send({ error: err.message });
+    res.status(500).send(ERRO.SERVER_ERROR);
   })
 };
 
-exports.getOnePlanetQueryString = (req, res) => {
-  const name = req.query.name;
+const getOnePlanetString = (req, res) => {
+  const name = req.params.name;
 
   Planet.find({ name: name }).then(response => {
-    res.send(response);
+    if (response.length < 1) res.status(404).send(ERRO.NOT_FOUND);
+    else res.send(response);
   }).catch(err => {
-    res.status(500).send({ error: err.message });
+    res.status(500).send(ERRO.SERVER_ERROR);
   })
 };
 
-exports.postPlanet = (req, res) => {
+const postPlanet = (req, res) => {
   if (
-    (req.body.name,
-      req.body.climate,
-      req.body.terrain)
+    req.body.index &&
+    req.body.name &&
+    req.body.climate &&
+    req.body.terrain
   ) {
     const newPlanet = new Planet({
+      _id: req.body.index,
       name: req.body.name,
       climate: req.body.climate,
       terrain: req.body.terrain
     });
 
     newPlanet.save().then(response => {
-      res.send(newPlacar);
+      res.send(newPlanet);
     }).catch(err => {
-      res.status(500).send({ error: err.message });
+      res.status(500).send(ERRO.SERVER_ERROR);
     });
+  } else {
+    res.status(400).send(ERRO.MISSING_INFORMATION);
   }
 };
 
-exports.putPlanet = (req, res) => {
+const putPlanet = (req, res) => {
   Planet.findOneAndUpdate({ _id: req.params.id }, req.body).then(response => {
     res.send(req.body);
   }).catch(err => {
-    res.status(500).send({ error: err.message });
+    res.status(500).send(ERRO.SERVER_ERROR);
   });
 };
 
-exports.deletePlanet = (req, res) => {
-
+const deletePlanet = (req, res) => {
   Planet.deleteOne({ _id: req.params.id }).then(response => {
     res.send({ success: true });
   }).catch(err => {
-    res.status(500).send({ error: err.message });
+    res.status(500).send(ERRO.SERVER_ERROR);
   });
 };
+
+exports.getAllPlanets = getAllPlanets;
+exports.getOnePlanetId = getOnePlanetId;
+exports.getOnePlanetString = getOnePlanetString;
+exports.postPlanet = postPlanet;
+exports.putPlanet = putPlanet;
+exports.deletePlanet = deletePlanet;

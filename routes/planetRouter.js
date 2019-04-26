@@ -2,16 +2,16 @@ const express = require('express');
 const router = express.Router();
 const planetService = require('../services/planetService');
 
-router.get('/api/planets/all', planetService.getAllPlanets);
+router.get('/planets', planetService.getAllPlanets);
 
-router.get('/api/planets/:id', planetService.getOnePlanetId);
+router.get('/planets/:id', planetService.getOnePlanetId);
 
-router.get('/api/planets', planetService.getOnePlanetQueryString);
+router.get('/planets/search/:name', planetService.getOnePlanetString);
 
-router.post('/api/planets', planetService.postPlanet);
+router.post('/planets', planetService.postPlanet);
 
-router.put('/api/planets/:id', planetService.putPlanet);
+router.put('/planets/:id', planetService.putPlanet);
 
-router.delete('/api/planets/:id', planetService.deletePlanet);
+router.delete('/planets/:id', planetService.deletePlanet);
 
 module.exports = router;
