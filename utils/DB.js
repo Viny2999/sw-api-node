@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const uri = require('../config/uri');
+const mongoose = require("mongoose");
+const uri = require("../config/uri");
 
 mongoose.connect(uri.mlab, {
   useNewUrlParser: true,
@@ -17,11 +17,11 @@ const planetSchema = new mongoose.Schema({
   climate: String,
   terrain: String
 }, {
-    collection: 'Planet',
+    collection: "Planet",
     _id: false,
     versionKey: false
   });
 
-const planet = mongoose.model('Planet', planetSchema);
+const planet = mongoose.model("Planet", planetSchema);
 
 module.exports = { Mongoose: mongoose, PlanetSchema: planetSchema, Planet: planet }

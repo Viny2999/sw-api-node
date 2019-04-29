@@ -5,9 +5,9 @@ A Simple Star Wars Node API for a B2W challenge :)
 
 Get all planets: `GET localhost:3000/planets`  
 
-Search per ID: `GET localhost:3000/planets/<ID>`
+Search by ID: `GET localhost:3000/planets/<ID>`
 
-Search per Name: `GET localhost:3000/planets/search/<NAME>`
+Search by Name: `GET localhost:3000/planets/search/<NAME>`
 
 Post a planet: `POST localhost:3000/planets`
 

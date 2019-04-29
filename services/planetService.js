@@ -1,4 +1,4 @@
-const Planet = require('../utils/mongoose').Planet;
+const Planet = require("../utils/DB").Planet;
 const ERRO = require("../utils/erros");
 const axios = require("axios");
 
@@ -10,23 +10,41 @@ const getAllPlanets = (req, res) => {
   });
 };
 
-const getOnePlanetId = (req, res) => {
-  Planet.find({ _id: req.params.id }).then(async response => {
+const getPlanetById = (req, res) => {
+  Planet.findOne({ _id: req.params.id }).then(async response => {
     if (response.length < 1) res.status(404).send(ERRO.NOT_FOUND);
     else {
-      return requestMovies(response);
+      let films = await requestMovies(response);
+      let newPlanet = new Object();
+      newPlanet._id = response._id;
+      newPlanet.name = response.name;
+      newPlanet.climate = response.climate;
+      newPlanet.terrain = response.terrain;
+      newPlanet.movies = films.movies;
+
+      res.send(newPlanet);
     }
   }).catch(err => {
     res.status(500).send(ERRO.SERVER_ERROR);
   })
 };
 
-const getOnePlanetString = (req, res) => {
+const getPlanetByName = (req, res) => {
   const name = req.params.name;
 
-  Planet.find({ name: name }).then(response => {
+  Planet.findOne({ name: name }).then(async response => {
     if (response.length < 1) res.status(404).send(ERRO.NOT_FOUND);
-    else res.send(response);
+    else {
+      let films = await requestMovies(response);
+      let newPlanet = new Object();
+      newPlanet._id = response._id;
+      newPlanet.name = response.name;
+      newPlanet.climate = response.climate;
+      newPlanet.terrain = response.terrain;
+      newPlanet.movies = films.movies;
+
+      res.send(newPlanet);
+    }
   }).catch(err => {
     res.status(500).send(ERRO.SERVER_ERROR);
   })
@@ -74,18 +92,20 @@ const deletePlanet = (req, res) => {
 
 const requestMovies = async (planet) => {
   const swapiEndpoint = "https://swapi.co/api/planets/";
-  planet = planet[0];
+  let films;
 
-  planet = await axios.get(swapiEndpoint + planet._id).then(res => {
-    return Object.assign(planet, res.data.films);
-  })
-
-  console.log(planet);
+  films = await axios.get(swapiEndpoint + planet._id).then(res => {
+    films = {
+      movies: res.data.films
+    }
+    return films
+  });
+  return films;
 }
 
 exports.getAllPlanets = getAllPlanets;
-exports.getOnePlanetId = getOnePlanetId;
-exports.getOnePlanetString = getOnePlanetString;
+exports.getPlanetById = getPlanetById;
+exports.getPlanetByName = getPlanetByName;
 exports.postPlanet = postPlanet;
 exports.putPlanet = putPlanet;
 exports.deletePlanet = deletePlanet;
