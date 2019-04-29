@@ -31,7 +31,7 @@ describe("GET /planets/:id", () => {
 /**
  * Testing endpoint of a planet per name
  */
-describe("GET /planets/:id", () => {
+describe("GET /planets/search/:name", () => {
 	it("Response 200 to the a planet per name", done => {
 		request(app)
 			.get("/planets/search/Tatooine")

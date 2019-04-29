@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
 const uri = require("../config/uri");
+require("dotenv").config();
 
-mongoose.connect(uri.mlab, {
-  useNewUrlParser: true,
-  useFindAndModify: false
-});
-
-// mongoose.connect(uri.local , { 
-//   useNewUrlParser: true,
-//   useFindAndModify: false 
-// });
+if (process.env.LOCAL == "true") {
+  mongoose.connect(uri.local, {
+    useNewUrlParser: true,
+    useFindAndModify: false
+  })
+} else {
+  mongoose.connect(uri.mlab, {
+    useNewUrlParser: true,
+    useFindAndModify: false
+  })
+}
 
 const planetSchema = new mongoose.Schema({
   _id: Number,

@@ -1,5 +1,8 @@
 # Star Wars API
-A Simple Star Wars Node API for a B2W challenge :)
+A Simple Star Wars Node API for a B2W challenge
+
+## Instruction
+To use a local database set in .env `LOCAL=true` and add local uri in config/uri.json.
 
 ## Endpoints
 

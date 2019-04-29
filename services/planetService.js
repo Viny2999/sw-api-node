@@ -12,8 +12,7 @@ const getAllPlanets = (req, res) => {
 
 const getPlanetById = (req, res) => {
   Planet.findOne({ _id: req.params.id }).then(async response => {
-    if (response.length < 1) res.status(404).send(ERRO.NOT_FOUND);
-    else {
+    if (response) {
       let films = await requestMovies(response);
       let newPlanet = new Object();
       newPlanet._id = response._id;
@@ -24,8 +23,9 @@ const getPlanetById = (req, res) => {
 
       res.send(newPlanet);
     }
+    else res.status(404).send(ERRO.NOT_FOUND);
   }).catch(err => {
-    res.status(500).send(ERRO.SERVER_ERROR);
+    res.status(500).send(err);
   })
 };
 
@@ -33,8 +33,7 @@ const getPlanetByName = (req, res) => {
   const name = req.params.name;
 
   Planet.findOne({ name: name }).then(async response => {
-    if (response.length < 1) res.status(404).send(ERRO.NOT_FOUND);
-    else {
+    if (response) {
       let films = await requestMovies(response);
       let newPlanet = new Object();
       newPlanet._id = response._id;
@@ -45,6 +44,7 @@ const getPlanetByName = (req, res) => {
 
       res.send(newPlanet);
     }
+    else res.status(404).send(ERRO.NOT_FOUND);
   }).catch(err => {
     res.status(500).send(ERRO.SERVER_ERROR);
   })
