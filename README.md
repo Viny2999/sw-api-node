@@ -1,5 +1,5 @@
 # Star Wars API
-A Simple Star Wars Node API for a B2W challenge
+A Simple Star Wars Node API.
 
 ## Instruction
 To use a local database set in .env `LOCAL=true` and add local uri in config/uri.json.
@@ -20,4 +20,4 @@ Delete a planet: `DELETE localhost:3000/planets/<ID>`
 
 ## Tests
 
-To start unit tests run `npm test`
+To start integration tests run `npm test`
