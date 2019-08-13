@@ -1,6 +1,8 @@
-const bodyParser = require("body-parser");
-const express = require("express");
-const ERRO = require("./utils/erros");
+import * as bodyParser from "body-parser";
+import * as express from "express";
+import * as ERRO from "./utils/erros.json";
+
+
 const mainRouter = require("./routes/mainRouter");
 const planetRouter = require("./routes/planetRouter");
 
