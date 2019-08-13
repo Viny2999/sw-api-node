@@ -3,23 +3,23 @@
   "version": "0.1.0",
   "main": "app.ts",
   "scripts": {
-    "start": "ts-node .",
+    "start": "ts-node src/.",
     "test": "mocha 'tests/*.ts' --timeout 30000 --exit"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "body-parser": "^1.18.3",
+    "@types/mongoose": "5.5.12",
+    "axios": "0.18.0",
+    "body-parser": "1.18.3",
     "debug": "~2.6.9",
-    "dotenv": "^7.0.0",
-    "ejs": "~2.5.7",
-    "express": "~4.16.0",
-    "mocha": "^6.0.2",
-    "mongodb": "^3.1.9",
-    "mongoose": "^5.5.3",
-    "supertest": "^4.0.2"
+    "dotenv": "7.0.0",
+    "ejs": "2.5.7",
+    "express": "4.16.0",
+    "mocha": "6.0.2",
+    "mongodb": "3.1.9",
+    "mongoose": "5.5.3",
+    "supertest": "4.0.2"
   },
   "devDependencies": {
-    "@types/glob": "^7.1.1",
     "@types/node": "8.10.44",
     "ts-node": "8.0.3",
     "tslint": "5.14.0",

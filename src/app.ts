@@ -1,6 +1,6 @@
 import * as bodyParser from "body-parser";
 import * as express from "express";
-import * as ERRO from "./utils/erros.json";
+import * as ERRO from "../utils/erros.json";
 
 
 const mainRouter = require("./routes/mainRouter");
