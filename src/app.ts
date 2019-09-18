@@ -1,38 +1,36 @@
-import * as bodyParser from "body-parser";
-import * as express from "express";
-import * as ERRO from "../utils/erros.json";
+import express, { Request, Response, NextFunction } from 'express';
+import { MainController, PlanetController } from "./controllers";
+import * as bodyParser from 'body-parser';
+import * as ERRO from '../utils/erros.json';
 
 
-const mainRouter = require("./routes/mainRouter");
-const planetRouter = require("./routes/planetRouter");
-
-const app = express();
+const app: express.Application = express();
 const port = process.env.PORT || 3000;
-const host = process.env.HOST || "localhost";
+const host = process.env.HOST || 'localhost';
 
-app.disable("x-powered-by");
+app.disable('x-powered-by');
 app.use(
   bodyParser.json({
-    limit: "50mb"
+    limit: '50mb'
   })
 );
 app.use(
   bodyParser.urlencoded({
-    limit: "50mb",
+    limit: '50mb',
     extended: true
   })
 );
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Methods", "*");
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  res.setHeader("Access-Control-Allow-Credentials", true);
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', '*');
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 });
 
-app.use("/", mainRouter, planetRouter);
+app.use('/', MainController, PlanetController);
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404);
   res.send(ERRO.NOT_FOUND);
 });
@@ -41,4 +39,4 @@ app.listen(port, () =>
   console.log(`The Web Server is Listening at http://${host}:${port}`)
 );
 
-module.exports = app;
+export const App: express.Application = app;
