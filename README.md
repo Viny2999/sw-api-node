@@ -1,12 +1,14 @@
 # Star Wars API
-A Simple Star Wars Node API for a B2W challenge
+
+A Simple Star Wars Node API
 
 ## Instruction
+
 To use a local database set in .env `LOCAL=true` and add local uri in config/uri.json.
 
 ## Endpoints
 
-Get all planets: `GET localhost:3000/planets`  
+Get all planets: `GET localhost:3000/planets`
 
 Search by ID: `GET localhost:3000/planets/<ID>`
 
