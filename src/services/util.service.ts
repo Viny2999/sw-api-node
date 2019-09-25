@@ -1,25 +1,30 @@
-import * as axiosDefault from 'axios';
+import { CacheService } from ".";
+import axios from 'axios';
 
-const axios = axiosDefault.default;
+const cacheService = new CacheService();
 
 export class UtilService {
-  public async requestMovies(index: String) {
-    const swapiEndpoint = `https://swapi.co/api/planets/${index}`;
-    let filmsArray, films;
-
+  public async requestMovies(index: Number) {
     try {
-      filmsArray = await axios.get(swapiEndpoint).then(res => {
+      let filmsCached = await cacheService.get(`${index}`);
+      if (filmsCached) {
+        return filmsCached;
+      }
+
+      const swapiEndpoint = `https://swapi.co/api/planets/${index}`;
+      const filmsArray = await axios.get(swapiEndpoint).then(res => {
         return res.data;
       });
-
-      films = {
+      const films = {
         movies: filmsArray.films
       };
+
+      await cacheService.set(`${index}`, films, 5000);
+
+      return films;
     } catch (err) {
       throw new Error(err);
     }
-
-    return films;
   }
 
   public formatMinutesToHours(uptime: number) {

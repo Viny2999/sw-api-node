@@ -1,3 +1,4 @@
+export * from './cache.service';
 export * from './main.service';
 export * from './mongo.service';
 export * from './planet.service';
