@@ -1,13 +1,13 @@
-# Star Wars API
+# Star Wars API 
+[![Build Status](https://travis-ci.org/Viny2999/sw-api-node.svg?branch=master)](https://travis-ci.org/Viny2999/sw-api-node)
 
-A Simple Star Wars Node API
+A Simple Star Wars Node API.
 
 ## Instruction
-
-To use a local ambient run: `npm run dev`
+To use a local ambient run: `npm run dev`.
+This application contains a Docker implementation, run: `docker-compose up` to create a container.
 
 ## Endpoints
-
 Get all planets: `GET localhost:3000/planets`
 
 Search by ID: `GET localhost:3000/planets/<ID>`
@@ -20,10 +20,14 @@ Put a planet: `PUT localhost:3000/planets/<ID>`
 
 Delete a planet: `DELETE localhost:3000/planets/<ID>`
 
-### Request Body Create a Planet Example
-
-`{ "name": "name", "climate": "climate", "terrain": "terrain" }`
+### Example of Request Body to Create a Planet
+```json
+{ 
+  "name": "Planet name", 
+  "climate": "Planet climate", 
+  "terrain": "Planet terrain" 
+}
+```
 
 ## Tests
-
-To start unit tests run `npm run test`
+To start mocha unit tests run `npm run test`.
