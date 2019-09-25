@@ -57,7 +57,7 @@ describe('POST /planets', () => {
       .send(data)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, done);
+      .expect(201, done);
   });
 });
 
@@ -86,7 +86,6 @@ describe('DELETE /planets/:id', () => {
     request(App)
       .delete('/planets/9999')
       .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
       .expect(200, done);
   });
 });
