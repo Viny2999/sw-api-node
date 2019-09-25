@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - '10'
+jobs:
+  include:
+    - stage: Test Stage
+      script: npm run test
+    - stage: Deploy Stage
+      deploy: &heroku
+        provider: heroku
+        app: sw-api-node
+        api_key:
+          secure: x/78lBBZH1uakFP1CS3qaC/rV71aSMdZjmAqVTs60FDbkMRUxzy8pk95PJt9NkRLmGMTvkzsOckGVjIZAbl0rZFXMcJuMlcumFgxFEg7ECUI8zENlkv9s5isomM4gReZ0uOb7clF1vR/7W1guH3Qx681cfXjMFucdbFdNPrDmtwAUQiSAdq/8/DYQEVFjYLpCFC+3jj7ygb4o3C5PMxBKslIS80U/zLTHd9cRrTk+Haef25iZN9Kirt994dAatXfF6vKgA6dKPFNNJfOyE6mrR4zsW2PDY77x4FiHb86QvcflvNi1ZfWRvaufFrdr4/BYiN/xfQFkWtjS5dQc4UeBj55McefZ+fBFaYgnkqD4PfyY5cb/5aUEHlKZVmbPSg3YhUdIqKFNfpuChEpqVZZ9q6RmKEnYF0hQEeJvrJfYhTQ3b+GIupYc+04TGouxmMB3G1X5DCtwaFNyRoD/JxaY86i3Z3d9F0TB3GnaQum7aWA9UM7Kyo7fj+2n740jWaXX6x6zvOl+7f2V+tB/UUbnRx+qqER9llx23vAbJ2ltZc46ZJWqUUfNw3x/OhamgjC5rh1QiR9PbRK5oD0VbtWXHWvLBXHerdnXwid/DTVamgPf69NpXodnVi7B5k09jD767SFauHQzoeiREpVm+cjrqRh6vHmBUzBk2XY/1cTWn4=
