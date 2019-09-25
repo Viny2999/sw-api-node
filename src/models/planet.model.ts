@@ -1,6 +1,5 @@
 import { Entity, model, property } from '@loopback/repository';
 import mongoose, { Schema, Document } from 'mongoose';
-import { ObjectID } from 'bson';
 
 export interface IPlanet extends Document {
   _id: String,
