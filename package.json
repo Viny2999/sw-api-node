@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "app.ts",
   "scripts": {
-    "prestart": "cp .env.tmpl .env",
     "start": "ts-node src/app.ts",
-    "dev": "NODE_ENV=dev nodemon --watch src -e ts . --exec 'npm start -s'",
+    "dev": "cp .env.tmpl .env && NODE_ENV=dev nodemon --watch src -e ts . --exec 'npm start -s'",
     "test": "mocha -r ts-node/register 'src/tests/*.ts' --timeout 30000 --exit"
   },
   "dependencies": {
