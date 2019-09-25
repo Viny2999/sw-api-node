@@ -9,6 +9,11 @@
       "message": "Internal Server Error"
     }
   },
+  "SERVER_ERROR_REQUEST": {
+    "error": {
+      "message": "Internal Server Error - Maybe this planet not exists in SWAPI database"
+    }
+  },
   "MISSING_INFORMATION": {
     "error": {
       "message": "Missing Information"

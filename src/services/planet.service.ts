@@ -1,16 +1,18 @@
-import { MISSING_INFORMATION, NOT_FOUND, SERVER_ERROR } from '../../utils/erros.json';
+import { MISSING_INFORMATION, NOT_FOUND, SERVER_ERROR, SERVER_ERROR_REQUEST } from '../../utils/erros.json';
 import { PlanetModel } from '../models/planet.model';
-import { MongoService, UtilService } from '.';
+import { LoggerService, MongoService, UtilService } from '.';
 import { Request, Response } from 'express';
 
 const mongoService = new MongoService();
 const Planet = mongoService.connect();
+const logger = LoggerService.getLogger();
 
 export class PlanetService {
   public async getAllPlanets(req: Request, res: Response) {
     try {
       const queryRes = await Planet.find()
         .sort({ _id: 1 });
+      logger.debug('PlanetService :: getAllPlanets :: All planets retrivied');
       res.send(queryRes);
     } catch (err) {
       res.status(500).send(SERVER_ERROR);
@@ -18,10 +20,10 @@ export class PlanetService {
     }
   };
 
-  public async getPlanetById(req: Request, res: Response) {
+  public async getPlanetByIndex(req: Request, res: Response) {
     try {
-      const id = Number(req.params.id)
-      const queryRes = await Planet.findOne({ index: id });
+      const index = Number(req.params.index)
+      const queryRes = await Planet.findOne({ index: index });
       if (queryRes) {
         const films = await UtilService.prototype.requestMovies(queryRes.get('index'));
         const planetInfo = {
@@ -32,12 +34,13 @@ export class PlanetService {
           terrain: queryRes.get('terrain'),
           ...films
         }
+        logger.debug('PlanetService :: getPlanetById :: Planet retrivied');
         res.send(planetInfo);
       } else {
         res.status(404).send(NOT_FOUND)
       };
     } catch (err) {
-      res.status(500).send(SERVER_ERROR);
+      res.status(500).send(SERVER_ERROR_REQUEST);
       throw new Error(err);
     }
   };
@@ -56,12 +59,13 @@ export class PlanetService {
           terrain: queryRes.get('terrain'),
           ...films
         }
+        logger.debug('PlanetService :: getPlanetByName :: Planet retrivied');
         res.send(planetInfo);
       } else {
         res.status(404).send(NOT_FOUND)
       };
     } catch (err) {
-      res.status(500).send(SERVER_ERROR);
+      res.status(500).send(SERVER_ERROR_REQUEST);
       throw new Error(err);
     }
   };
@@ -79,7 +83,8 @@ export class PlanetService {
 
       try {
         await Planet.create(newPlanet);
-        res.send(newPlanet);
+        logger.debug('PlanetService :: postPlanet :: Planet created : ', JSON.stringify(newPlanet, null, 2));
+        res.status(201).send(newPlanet);
       } catch (err) {
         res.status(500).send(SERVER_ERROR);
         throw new Error(err);
@@ -90,21 +95,28 @@ export class PlanetService {
   };
 
   public async putPlanet(req: Request, res: Response) {
-    try {
-      const id = Number(req.params.id)
-      await Planet.findOneAndUpdate({ index: id }, req.body);
-      res.send(req.body);
-    } catch (err) {
-      res.status(500).send(SERVER_ERROR);
-      throw new Error(err);
+    if (req.body.name || req.body.climate || req.body.terrain) {
+      try {
+        const index = Number(req.params.index)
+        const dataToUpdate = req.body;
+        await Planet.findOneAndUpdate({ index: index }, dataToUpdate);
+        logger.debug('PlanetService :: putPlanet :: Data updated : ', JSON.stringify(dataToUpdate, null, 2));
+        res.send(dataToUpdate);
+      } catch (err) {
+        res.status(500).send(SERVER_ERROR);
+        throw new Error(err);
+      }
+    } else {
+      res.status(400).send(MISSING_INFORMATION);
     }
   }
 
   public async deletePlanet(req: Request, res: Response) {
     try {
-      const id = Number(req.params.id)
-      await Planet.deleteOne({ index: id });
-      res.send({ success: true });
+      const index = Number(req.params.index)
+      await Planet.deleteOne({ index: index });
+      console.info('PlanetService :: deletePlanet :: Planet deleted');
+      res.status(200).send();
     } catch (err) {
       res.status(500).send(SERVER_ERROR);
       throw new Error(err);
