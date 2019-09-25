@@ -1,11 +1,11 @@
 {
   "name": "sw-api",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "main": "app.ts",
   "scripts": {
     "start": "ts-node src/app.ts",
     "dev": "cp .env.tmpl .env && NODE_ENV=dev nodemon --watch src -e ts . --exec 'npm start -s'",
-    "test": "mocha -r ts-node/register 'src/tests/*.ts' --timeout 30000 --exit"
+    "test": "LOG_LEVEL=info mocha -r ts-node/register 'src/tests/*.ts' --timeout 30000 --exit"
   },
   "dependencies": {
     "@loopback/repository": "1.14.0",
@@ -19,6 +19,7 @@
     "dotenv": "7.0.0",
     "ejs": "2.5.7",
     "express": "4.16.0",
+    "log4js": "5.1.0",
     "mocha": "6.0.2",
     "mongodb": "3.1.9",
     "mongoose": "5.5.3",

@@ -1,17 +1,18 @@
 import { MISSING_INFORMATION, NOT_FOUND, SERVER_ERROR, SERVER_ERROR_REQUEST } from '../../utils/erros.json';
 import { PlanetModel } from '../models/planet.model';
-import { MongoService, UtilService } from '.';
+import { LoggerService, MongoService, UtilService } from '.';
 import { Request, Response } from 'express';
 
 const mongoService = new MongoService();
 const Planet = mongoService.connect();
+const logger = LoggerService.getLogger();
 
 export class PlanetService {
   public async getAllPlanets(req: Request, res: Response) {
     try {
       const queryRes = await Planet.find()
         .sort({ _id: 1 });
-      console.info('PlanetService :: getAllPlanets :: All planets retrivied');
+      logger.debug('PlanetService :: getAllPlanets :: All planets retrivied');
       res.send(queryRes);
     } catch (err) {
       res.status(500).send(SERVER_ERROR);
@@ -33,7 +34,7 @@ export class PlanetService {
           terrain: queryRes.get('terrain'),
           ...films
         }
-        console.info('PlanetService :: getPlanetById :: Planet retrivied');
+        logger.debug('PlanetService :: getPlanetById :: Planet retrivied');
         res.send(planetInfo);
       } else {
         res.status(404).send(NOT_FOUND)
@@ -58,7 +59,7 @@ export class PlanetService {
           terrain: queryRes.get('terrain'),
           ...films
         }
-        console.info('PlanetService :: getPlanetByName :: Planet retrivied');
+        logger.debug('PlanetService :: getPlanetByName :: Planet retrivied');
         res.send(planetInfo);
       } else {
         res.status(404).send(NOT_FOUND)
@@ -82,7 +83,7 @@ export class PlanetService {
 
       try {
         await Planet.create(newPlanet);
-        console.info('PlanetService :: postPlanet :: Planet created : ', JSON.stringify(newPlanet, null, 2));
+        logger.debug('PlanetService :: postPlanet :: Planet created : ', JSON.stringify(newPlanet, null, 2));
         res.status(201).send(newPlanet);
       } catch (err) {
         res.status(500).send(SERVER_ERROR);
@@ -99,7 +100,7 @@ export class PlanetService {
         const index = Number(req.params.index)
         const dataToUpdate = req.body;
         await Planet.findOneAndUpdate({ index: index }, dataToUpdate);
-        console.info('PlanetService :: putPlanet :: Data updated : ', JSON.stringify(dataToUpdate, null, 2));
+        logger.debug('PlanetService :: putPlanet :: Data updated : ', JSON.stringify(dataToUpdate, null, 2));
         res.send(dataToUpdate);
       } catch (err) {
         res.status(500).send(SERVER_ERROR);
