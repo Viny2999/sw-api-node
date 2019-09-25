@@ -1,4 +1,5 @@
-# Star Wars API [![Build Status](https://travis-ci.org/Viny2999/sw-api-node.svg?branch=master)](https://travis-ci.org/Viny2999/sw-api-node)
+# Star Wars API 
+[![Build Status](https://travis-ci.org/Viny2999/sw-api-node.svg?branch=master)](https://travis-ci.org/Viny2999/sw-api-node)
 
 A Simple Star Wars Node API
 
