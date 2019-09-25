@@ -1,18 +1,15 @@
 import { MISSING_INFORMATION, NOT_FOUND, SERVER_ERROR } from '../../utils/erros.json';
 import { PlanetModel } from '../models/planet.model';
-import { MongoService } from './mongo.service';
+import { MongoService, UtilService } from '.';
 import { Request, Response } from 'express';
-import { Document } from 'mongoose';
-import * as axiosDefault from 'axios';
 
-const mongo = new MongoService();
-const Planet = mongo.connect();
-const axios = axiosDefault.default;
+const mongoService = new MongoService();
+const Planet = mongoService.connect();
 
 export class PlanetService {
   public async getAllPlanets(req: Request, res: Response) {
     try {
-      let queryRes = await Planet.find()
+      const queryRes = await Planet.find()
         .sort({ _id: 1 });
       res.send(queryRes);
     } catch (err) {
@@ -23,12 +20,19 @@ export class PlanetService {
 
   public async getPlanetById(req: Request, res: Response) {
     try {
-      const id = parseInt(req.params.id);
-      let queryRes = await Planet.findOne({ _id: id });
+      const id = Number(req.params.id)
+      const queryRes = await Planet.findOne({ index: id });
       if (queryRes) {
-        let films = await this.requestMovies(queryRes);
-        queryRes = Object.assign(queryRes, films);
-        res.send(queryRes);
+        const films = await UtilService.prototype.requestMovies(queryRes.get('index'));
+        const planetInfo = {
+          _id: queryRes.get('_id'),
+          index: queryRes.get('index'),
+          name: queryRes.get('name'),
+          climate: queryRes.get('climate'),
+          terrain: queryRes.get('terrain'),
+          ...films
+        }
+        res.send(planetInfo);
       } else {
         res.status(404).send(NOT_FOUND)
       };
@@ -39,13 +43,20 @@ export class PlanetService {
   };
 
   public async getPlanetByName(req: Request, res: Response) {
-    const name = req.params.name;
     try {
+      const name = req.params.name;
       let queryRes = await Planet.findOne({ name: name });
       if (queryRes) {
-        let films = await this.requestMovies(queryRes);
-        queryRes = Object.assign(queryRes, films);
-        res.send(queryRes);
+        const films = await UtilService.prototype.requestMovies(queryRes.get('index'));
+        const planetInfo = {
+          _id: queryRes.get('_id'),
+          index: queryRes.get('index'),
+          name: queryRes.get('name'),
+          climate: queryRes.get('climate'),
+          terrain: queryRes.get('terrain'),
+          ...films
+        }
+        res.send(planetInfo);
       } else {
         res.status(404).send(NOT_FOUND)
       };
@@ -56,9 +67,11 @@ export class PlanetService {
   };
 
   public async postPlanet(req: Request, res: Response) {
-    if (req.body.index && req.body.name && req.body.climate && req.body.terrain) {
+    if (req.body.name && req.body.climate && req.body.terrain) {
+      const planetCount = await Planet.countDocuments();
+
       const newPlanet = new PlanetModel({
-        _id: req.body.index,
+        index: Number(req.body.index) || planetCount + 1,
         name: req.body.name,
         climate: req.body.climate,
         terrain: req.body.terrain
@@ -78,7 +91,8 @@ export class PlanetService {
 
   public async putPlanet(req: Request, res: Response) {
     try {
-      await Planet.findOneAndUpdate({ _id: req.params.id }, req.body);
+      const id = Number(req.params.id)
+      await Planet.findOneAndUpdate({ index: id }, req.body);
       res.send(req.body);
     } catch (err) {
       res.status(500).send(SERVER_ERROR);
@@ -88,30 +102,12 @@ export class PlanetService {
 
   public async deletePlanet(req: Request, res: Response) {
     try {
-      await Planet.deleteOne({ _id: req.params.id });
+      const id = Number(req.params.id)
+      await Planet.deleteOne({ index: id });
       res.send({ success: true });
     } catch (err) {
       res.status(500).send(SERVER_ERROR);
       throw new Error(err);
     }
-  }
-
-  private async requestMovies(planet: Document) {
-    const swapiEndpoint = 'https://swapi.co/api/planets/';
-    let filmsArray, films;
-
-    try {
-      filmsArray = await axios.get(swapiEndpoint + planet._id).then(res => {
-        return res.data;
-      });
-
-      films = {
-        movies: filmsArray
-      };
-    } catch (err) {
-      throw new Error(err);
-    }
-
-    return films;
   }
 }

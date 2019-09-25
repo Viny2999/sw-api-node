@@ -1,5 +1,6 @@
 import { Entity, model, property } from '@loopback/repository';
 import mongoose, { Schema, Document } from 'mongoose';
+import { ObjectID } from 'bson';
 
 export interface IPlanet extends Document {
   _id: String,
@@ -17,6 +18,13 @@ export class PlanetModel extends Entity {
     generated: true,
   })
   _id: String;
+
+  @property({
+    type: 'number',
+    id: true,
+    generated: true,
+  })
+  index: number;
 
   @property({
     type: 'string',
@@ -40,13 +48,12 @@ export class PlanetModel extends Entity {
 }
 
 const PlanetSchema = new Schema({
-  _id: String,
+  index: Number,
   name: String,
   climate: String,
   terrain: String
 }, {
   collection: 'Planet',
-  _id: false,
   versionKey: false
 });
 

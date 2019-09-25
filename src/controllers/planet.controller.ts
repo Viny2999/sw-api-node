@@ -2,17 +2,18 @@ import { PlanetService } from '../services/planet.service';
 import { Router } from 'express';
 
 const router = Router();
+const planetService = new PlanetService();
 
-router.get('/planets', PlanetService.prototype.getAllPlanets);
+router.get('/planets', planetService.getAllPlanets);
 
-router.get('/planets/:id', PlanetService.prototype.getPlanetById);
+router.get('/planets/:id', planetService.getPlanetById);
 
-router.get('/planets/search/:name', PlanetService.prototype.getPlanetByName);
+router.get('/planets/search/:name', planetService.getPlanetByName);
 
-router.post('/planets', PlanetService.prototype.postPlanet);
+router.post('/planets', planetService.postPlanet);
 
-router.put('/planets/:id', PlanetService.prototype.putPlanet);
+router.put('/planets/:id', planetService.putPlanet);
 
-router.delete('/planets/:id', PlanetService.prototype.deletePlanet);
+router.delete('/planets/:id', planetService.deletePlanet);
 
 export const PlanetController: Router = router;
