@@ -1,17 +1,16 @@
 import { MISSING_INFORMATION, NOT_FOUND, SERVER_ERROR, SERVER_ERROR_REQUEST } from '../../utils/erros.json';
 import { PlanetModel } from '../models/planet.model';
-import { LoggerService, MongoService, UtilService } from '.';
+import { MongoRepository } from '../repositories';
+import { LoggerService, UtilService } from '.';
 import { Request, Response } from 'express';
 
-const mongoService = new MongoService();
-const Planet = mongoService.connect();
+const mongoRepository = new MongoRepository();
 const logger = LoggerService.getLogger();
 
 export class PlanetService {
   public async getAllPlanets(req: Request, res: Response) {
     try {
-      const queryRes = await Planet.find()
-        .sort({ _id: 1 });
+      const queryRes = await mongoRepository.find();
       logger.debug('PlanetService :: getAllPlanets :: All planets retrivied');
       res.send(queryRes);
     } catch (err) {
@@ -23,7 +22,7 @@ export class PlanetService {
   public async getPlanetByIndex(req: Request, res: Response) {
     try {
       const index = Number(req.params.index)
-      const queryRes = await Planet.findOne({ index: index });
+      const queryRes = await mongoRepository.findOne(index);
       if (queryRes) {
         const films = await UtilService.prototype.requestMovies(queryRes.get('index'));
         const planetInfo = {
@@ -48,7 +47,7 @@ export class PlanetService {
   public async getPlanetByName(req: Request, res: Response) {
     try {
       const name = req.params.name;
-      let queryRes = await Planet.findOne({ name: name });
+      let queryRes = await mongoRepository.findOneName(name);
       if (queryRes) {
         const films = await UtilService.prototype.requestMovies(queryRes.get('index'));
         const planetInfo = {
@@ -72,7 +71,7 @@ export class PlanetService {
 
   public async postPlanet(req: Request, res: Response) {
     if (req.body.name && req.body.climate && req.body.terrain) {
-      const planetCount = await Planet.countDocuments();
+      const planetCount = await mongoRepository.count();
 
       const newPlanet = new PlanetModel({
         index: Number(req.body.index) || planetCount + 1,
@@ -82,7 +81,7 @@ export class PlanetService {
       });
 
       try {
-        await Planet.create(newPlanet);
+        await mongoRepository.insert(newPlanet);
         logger.debug('PlanetService :: postPlanet :: Planet created : ', JSON.stringify(newPlanet, null, 2));
         res.status(201).send(newPlanet);
       } catch (err) {
@@ -99,7 +98,7 @@ export class PlanetService {
       try {
         const index = Number(req.params.index)
         const dataToUpdate = req.body;
-        await Planet.findOneAndUpdate({ index: index }, dataToUpdate);
+        await mongoRepository.update(index, dataToUpdate);
         logger.debug('PlanetService :: putPlanet :: Data updated : ', JSON.stringify(dataToUpdate, null, 2));
         res.send(dataToUpdate);
       } catch (err) {
@@ -114,8 +113,8 @@ export class PlanetService {
   public async deletePlanet(req: Request, res: Response) {
     try {
       const index = Number(req.params.index)
-      await Planet.deleteOne({ index: index });
-      console.info('PlanetService :: deletePlanet :: Planet deleted');
+      await mongoRepository.delete(index);
+      logger.debug('PlanetService :: deletePlanet :: Planet deleted');
       res.status(200).send();
     } catch (err) {
       res.status(500).send(SERVER_ERROR);
