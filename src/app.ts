@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { MainController, PlanetController } from "./controllers";
 import * as bodyParser from 'body-parser';
+import * as paginate from "express-paginate";
 import * as ERRO from '../utils/erros.json';
 
 
@@ -29,6 +30,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use('/', MainController, PlanetController);
+app.use(paginate.middleware(10, 50));
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(404);
