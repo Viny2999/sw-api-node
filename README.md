@@ -1,13 +1,12 @@
 # Star Wars API
 
-[![Build Status](https://travis-ci.org/Viny2999/sw-api-node.svg?branch=master)](https://travis-ci.org/Viny2999/sw-api-node)
-
 A Simple Star Wars Node API.
 Using API Pagination and Node Cache to cache Planets.
 
 ## Instruction
 
 To use a local ambient run: `npm run dev`.
+Enviroments are setted in .env.tmpl, type: `cp .env.tmpl .env`.
 This application contains a Docker implementation, run: `docker-compose up` to create a container.
 
 ## Endpoints
