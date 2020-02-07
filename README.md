@@ -6,12 +6,15 @@ Using API Pagination and Node Cache to cache Planets.
 ## Instruction
 
 To use a local ambient run: `npm run dev`.
+
 Enviroments are setted in .env.tmpl, type: `cp .env.tmpl .env`.
+
 This application contains a Docker implementation, run: `docker-compose up` to create a container.
 
 ## Endpoints
 
-Get all planets with pagination: `GET localhost:3000/planets?page=2&limit=10`
+Get all planets with pagination: `GET localhost:3000/planets?page=1&limit=10`
+
 Without pagination: `GET localhost:3000/planets`.
 
 Search by Index: `GET localhost:3000/planets/<INDEX>`
