@@ -12,7 +12,7 @@ This application contains a Docker implementation, run: `docker-compose up` to c
 ## Endpoints
 
 Get all planets with pagination: `GET localhost:3000/planets?page=2&limit=10`
-Without pagination, like: `GET localhost:3000/planets`. Default is Page 1 and Limit 10.
+Without pagination: `GET localhost:3000/planets`.
 
 Search by Index: `GET localhost:3000/planets/<INDEX>`
 
