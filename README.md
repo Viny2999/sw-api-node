@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/Viny2999/sw-api-node.svg?branch=master)](https://travis-ci.org/Viny2999/sw-api-node)
 
 A Simple Star Wars Node API.
+Using API Pagination and Node Cache to cache Planets.
 
 ## Instruction
 
@@ -11,7 +12,8 @@ This application contains a Docker implementation, run: `docker-compose up` to c
 
 ## Endpoints
 
-Get all planets: `GET localhost:3000/planets`
+Get all planets with pagination: `GET localhost:3000/planets?page=2&limit=10`
+Without pagination, like: `GET localhost:3000/planets`. Default is Page 1 and Limit 10.
 
 Search by Index: `GET localhost:3000/planets/<INDEX>`
 

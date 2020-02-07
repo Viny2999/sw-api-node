@@ -1,1 +1,1 @@
-export * from './mongo.repository';
+export * from './planet.repository';
