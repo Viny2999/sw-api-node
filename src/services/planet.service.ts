@@ -9,7 +9,7 @@ const logger = LoggerService.getLogger();
 
 export class PlanetService {
   public async getAllPlanets(req: Request, res: Response) {
-    [req.query.page, req.query.limit] = (req.query.page && req.query.limit) ? [parseInt(req.query.page), parseInt(req.query.limit)] : [1, 10];
+    [req.query.page, req.query.limit] = (req.query.page && req.query.limit) ? [parseInt(req.query.page), parseInt(req.query.limit)] : [1, 100];
 
     try {
       const queryRes = await planetRepository.find(req);
