@@ -2,7 +2,7 @@ import { LoggerService } from '.';
 import Cache from 'node-cache';
 
 export class CacheService {
-  public readonly cache = new Cache();
+  private readonly cache = new Cache();
   private readonly logger = LoggerService.getLogger();
 
   public set(key: string, obj: any, time: number = 0): Promise<any> {
