@@ -13,7 +13,7 @@
     "@types/mocha": "5.2.7",
     "@types/mongoose": "5.5.12",
     "@types/supertest": "2.0.8",
-    "axios": "0.18.0",
+    "axios": "0.21.1",
     "body-parser": "1.18.3",
     "debug": "2.6.9",
     "dotenv": "7.0.0",
